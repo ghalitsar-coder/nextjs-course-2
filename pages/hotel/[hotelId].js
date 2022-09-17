@@ -31,7 +31,7 @@ export const getStaticPaths = async ({ params }) => {
     const hotels = await Hotel.find({}, { _id: 1 });
     await disconnectMongo();
     return {
-      fallback: false,
+      fallback: "blocking",
       paths: hotels.map((item) => ({
         params: { hotelId: item._id.toString() },
       })),
