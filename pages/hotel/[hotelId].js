@@ -1,4 +1,5 @@
 import Link from "next/link";
+import mongoose from "mongoose";
 import React from "react";
 import Hotel from "../../models/Hotel";
 import { connectMongo, disconnectMongo } from "../../utils/db";
@@ -27,14 +28,18 @@ export default DetailHotel;
 
 export const getStaticPaths = async ({ params }) => {
   try {
+    console.log("IM HERE AT THE TOP");
     await connectMongo();
-    const hotels = await Hotel.find({}, { _id: 1 });
+    const hotels = await Hotel.find();
     await disconnectMongo();
+    const paths = hotels.map((item) => ({
+      params: { hotelId: item._id.toString() },
+    }));
+    console.log("PATHS  ==================>", typeof paths[0].params.hotelId);
+
     return {
       fallback: "blocking",
-      paths: hotels.map((item) => ({
-        params: { hotelId: item._id.toString() },
-      })),
+      paths,
     };
   } catch (err) {
     console.log(err);
@@ -44,8 +49,11 @@ export const getStaticPaths = async ({ params }) => {
 
 export const getStaticProps = async ({ params }) => {
   const { hotelId } = params;
+  console.log("THIS IS PARAMS ->", params);
   await connectMongo();
-  const hotel = await Hotel.findOne({ _id: hotelId });
+  const hotel = await Hotel.findById(mongoose.Types.ObjectId(hotelId));
+  console.log("CURRENT HOTEL ->", JSON.parse(JSON.stringify(hotel)));
+
   await disconnectMongo();
 
   try {
