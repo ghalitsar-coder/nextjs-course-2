@@ -6,16 +6,6 @@ import { connectMongo, disconnectMongo } from "../../utils/db";
 const DetailHotel = ({ item }) => {
   return (
     <div className="w-full shadow-lg rounded-lg ">
-      <div className="max-w-full max-h-lg">
-        <img
-          src={item.image}
-          className="w-full h-full object-cover"
-          layout="responsive"
-          width="100%"
-          height="100%"
-          alt="hotel-image"
-        />
-      </div>
       <div className="grid gap-y-3 p-3 font-poppins">
         <h2 className="font-semibold text-xl ">
           <Link href={`/hotel/${item.id}`}>{item.name}</Link>
