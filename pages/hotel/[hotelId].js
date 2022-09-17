@@ -38,8 +38,8 @@ export const getStaticPaths = async ({ params }) => {
     console.log("PATHS  ==================>", typeof paths[0].params.hotelId);
 
     return {
-      fallback: "blocking",
       paths,
+      fallback: false,
     };
   } catch (err) {
     console.log(err);
